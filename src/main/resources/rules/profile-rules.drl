@@ -1,0 +1,70 @@
+package com.example.rules
+
+import java.util.List;
+import com.example.model.Customer;
+import com.example.model.Profile;
+import com.example.model.LoyaltyPoints;
+import com.example.model.Identifier;
+import com.example.service.ProfileService;
+
+// Rule to detect B2B profiles
+rule "Detect B2B Profile"
+when
+  $c: Customer( $ids: userIdentifiers )
+  exists Identifier( key in ("alibaba_supplier_id", "tax_id", "business_contact_email") ) from $ids
+then
+  System.out.println("B2B Rule Fired for: " + $c.getEmail());
+  Profile p = new Profile("b2b");
+  p.setCompanyName($c.getCompanyName());
+  p.setTaxId($c.getTaxId());
+  p.setContactName($c.getContactName());
+  p.setEmail($c.getEmail());
+  p.setPhone($c.getPhone());
+  p.setAddress($c.getAddress());
+  p.setTransactionVolume($c.getTransactionVolume());
+  p.setSourceSystem($c.getSourceSystem());
+  List<Identifier> filteredIdentifiers = ProfileService.filterIdentifiers($ids, "b2b");
+  p.setUserIdentifiers(filteredIdentifiers);
+  $c.getProfiles().add(p);
+end
+
+// Rule to detect B2C profiles (Fixed)
+rule "Detect B2C Profile"
+when
+  $c: Customer( $ids: userIdentifiers, $lp: loyaltyPoints )
+  (
+    ( exists Identifier( key in ("amazon_customer_id", "prime_membership_id") ) from $ids )
+  )
+then
+  System.out.println("B2C Rule Fired for: " + $c.getEmail());
+  Profile p = new Profile("b2c");
+  p.setFirstName($c.getFirstName());
+  p.setLastName($c.getLastName());
+  p.setEmail($c.getEmail());
+  p.setPhone($c.getPhone());
+  p.setAddress($c.getAddress());
+  p.setLoyaltyPoints($c.getLoyaltyPoints());
+  p.setSourceSystem($c.getSourceSystem());
+  List<Identifier> filteredIdentifiers = ProfileService.filterIdentifiers($ids, "b2c");
+  p.setUserIdentifiers(filteredIdentifiers);
+  $c.getProfiles().add(p);
+end
+
+// Rule to detect C2C profiles
+rule "Detect C2C Profile"
+when
+  $c: Customer( $ids: userIdentifiers )
+  exists Identifier( key in ("ebay_user_id", "seller_rating", "paypal_email") ) from $ids
+then
+  System.out.println("C2C Rule Fired for: " + $c.getEmail());
+  Profile p = new Profile("c2c");
+  p.setFirstName($c.getFirstName());
+  p.setLastName($c.getLastName());
+  p.setEmail($c.getEmail());
+  p.setPhone($c.getPhone());
+  p.setAddress($c.getAddress());
+  p.setSourceSystem($c.getSourceSystem());
+  List<Identifier> filteredIdentifiers = ProfileService.filterIdentifiers($ids, "c2c");
+  p.setUserIdentifiers(filteredIdentifiers);
+  $c.getProfiles().add(p);
+end

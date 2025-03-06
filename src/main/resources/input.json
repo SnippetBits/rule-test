@@ -1,0 +1,51 @@
+{
+  "customers": [
+    {
+      "customer_id": "CUST001",
+      "company_name": "TechCorp",
+      "tax_id": "TX123456789",
+      "contact_name": "John Smith",
+      "email": "john.smith@techcorp.com",
+      "phone": "+1-555-123-4567",
+      "address": {
+        "street": "123 Business Ave",
+        "city": "New York",
+        "state": "NY",
+        "zip": "10001",
+        "country": "USA"
+      },
+      "transaction_volume": 50000,
+      "source_system": "CRM_B2B",
+      "user_identifiers": [
+        { "key": "alibaba_supplier_id", "value": "ALB987654321" },
+        { "key": "tax_id", "value": "TX123456789" },
+        { "key": "business_contact_email", "value": "john.smith@techcorp.com" }
+      ]
+    },
+    {
+      "customer_id": "CUST002",
+      "first_name": "Alice",
+      "last_name": "Johnson",
+      "email": "alice.johnson@gmail.com",
+      "phone": "+1-555-987-6543",
+      "address": {
+        "street": "456 Main St",
+        "city": "Los Angeles",
+        "state": "CA",
+        "zip": "90001",
+        "country": "USA"
+      },
+      "loyalty_points": {
+        "value": 1200,
+        "platform_indicator": "amazon_prime"
+      },
+      "source_system": "ECommerce_Platform",
+      "user_identifiers": [
+        { "key": "amazon_customer_id", "value": "AMZ1234567890" },
+        { "key": "ebay_user_id", "value": "EBY_alicej" },
+        { "key": "personal_email", "value": "alice.johnson@gmail.com" },
+        { "key": "prime_membership_id", "value": "PRM456789" }
+      ]
+    }
+  ]
+}
